@@ -1,0 +1,14 @@
+Source: erot
+Section: gui
+Maintainer: Alexander Kerner <lunohod@openinkpot.org>
+Build-Depends: debhelper (>> 2.0.0), autoconf, automake, libtool, pkg-config, libecore-dev
+XCS-Cross-Host-Build-Depends: debhelper (>> 2.0.0), autoconf, automake, libtool, pkg-config
+XCS-Cross-Build-Depends: libecore-dev
+Priority: optional
+Standards-Version: 3.6.2
+
+Package: erot
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Screen rotation utility
+ Screen rotation utility
