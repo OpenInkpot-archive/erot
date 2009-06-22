@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+if [ -f /etc/default/erot ]; then
+	rm -f /etc/default/erot
+fi
+
+#DEBHELPER#
+
+exit 0

@@ -67,9 +67,26 @@ static int _client_data(void* param, int ev_type, void* ev)
     return 0;
 }
 
+int read_config()
+{
+	int i = 360;
+	int x;
+	char buf[255];
+	FILE *f;
+
+	f = fopen("/etc/default/erot", "r");
+	if(f != NULL) {
+		fscanf(f, "%d", &i);
+		fclose(f);
+	}
+
+	return i;
+}
+
 void rotate()
 {
 	Ecore_X_Randr_Rotation r;
+	Ecore_X_Randr_Rotation rconf;
 	Ecore_X_Window root;
 
 	root = ecore_x_window_root_first_get();
@@ -78,22 +95,46 @@ void rotate()
 	ecore_x_randr_get_screen_info_fetch();
 	r = ecore_x_randr_screen_rotation_get(root);
 
-	switch(r) {
-		case ECORE_X_RANDR_ROT_0:
-			r = ECORE_X_RANDR_ROT_90;
-			break;
-		case ECORE_X_RANDR_ROT_90:
-			r = ECORE_X_RANDR_ROT_180;
-			break;
-		case ECORE_X_RANDR_ROT_180:
-			r = ECORE_X_RANDR_ROT_270;
-			break;
-		case ECORE_X_RANDR_ROT_270:
+	int conf = read_config();
+	if(conf == 360)
+		switch(r) {
+			case ECORE_X_RANDR_ROT_0:
+				r = ECORE_X_RANDR_ROT_90;
+				break;
+			case ECORE_X_RANDR_ROT_90:
+				r = ECORE_X_RANDR_ROT_180;
+				break;
+			case ECORE_X_RANDR_ROT_180:
+				r = ECORE_X_RANDR_ROT_270;
+				break;
+			case ECORE_X_RANDR_ROT_270:
+				r = ECORE_X_RANDR_ROT_0;
+				break;
+			default:
+				r = ECORE_X_RANDR_ROT_0;
+				break;
+		}
+	else {
+		switch(conf) {
+			case 0:
+				rconf = ECORE_X_RANDR_ROT_0;
+				break;
+			case 90:
+				rconf = ECORE_X_RANDR_ROT_90;
+				break;
+			case 180:
+				rconf = ECORE_X_RANDR_ROT_180;
+				break;
+			case 270:
+				rconf = ECORE_X_RANDR_ROT_270;
+				break;
+			default:
+				rconf = ECORE_X_RANDR_ROT_0;
+		}
+		if(rconf != r)
+			r = rconf;
+		else
 			r = ECORE_X_RANDR_ROT_0;
-			break;
-		default:
-			r = ECORE_X_RANDR_ROT_0;
-			break;
 	}
 
 	ecore_x_randr_get_screen_info_prefetch(root);
