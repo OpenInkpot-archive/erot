@@ -1,3 +1,9 @@
+erot (0.1-2) asimov; urgency=low
+
+  * added rotation setting
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Mon, 22 Jun 2009 17:30:59 +0200
+
 erot (0.1-1) asimov; urgency=low
 
   * first build
