@@ -1,3 +1,9 @@
+erot (0.1-2+b1) asimov; urgency=low
+
+  * Rebuild due to EFL update
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Tue, 18 Aug 2009 02:56:48 +0700
+
 erot (0.1-2) asimov; urgency=low
 
   * added rotation setting
