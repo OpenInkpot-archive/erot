@@ -11,8 +11,10 @@
 #endif
 
 #define ROTATE "Rotate"
+#define FORWARD_ROTATE "RotateForward"
+#define BACK_ROTATE "RotateBack"
 
-void rotate();
+void rotate(int);
 
 void exit_all(void* param) { ecore_main_loop_quit(); }
 
@@ -48,7 +50,11 @@ static int _client_del(void* param, int ev_type, void* ev)
 
     /* Handle */
 	if(strlen(ROTATE) == msg->size && !strncmp(ROTATE, msg->msg, msg->size))
-		rotate();
+		rotate(1);
+	if(strlen(FORWARD_ROTATE) == msg->size && !strncmp(FORWARD_ROTATE, msg->msg, msg->size))
+		rotate(1);
+    if(strlen(BACK_ROTATE) == msg->size && !strncmp(BACK_ROTATE, msg->msg, msg->size))
+        rotate(-1);
 
     //printf(": %.*s(%d)\n", msg->size, msg->msg, msg->size);
 
@@ -83,7 +89,7 @@ int read_config()
 	return i;
 }
 
-void rotate()
+void rotate(int direction)
 {
 	Ecore_X_Randr_Rotation r;
 	Ecore_X_Randr_Rotation rconf;
@@ -95,25 +101,17 @@ void rotate()
 	ecore_x_randr_get_screen_info_fetch();
 	r = ecore_x_randr_screen_rotation_get(root);
 
+
 	int conf = read_config();
 	if(conf == 360)
-		switch(r) {
-			case ECORE_X_RANDR_ROT_0:
-				r = ECORE_X_RANDR_ROT_90;
-				break;
-			case ECORE_X_RANDR_ROT_90:
-				r = ECORE_X_RANDR_ROT_180;
-				break;
-			case ECORE_X_RANDR_ROT_180:
-				r = ECORE_X_RANDR_ROT_270;
-				break;
-			case ECORE_X_RANDR_ROT_270:
-				r = ECORE_X_RANDR_ROT_0;
-				break;
-			default:
-				r = ECORE_X_RANDR_ROT_0;
-				break;
-		}
+    {
+        if(direction == 1)
+            r <<= 1;
+        else
+            r >>= 1;
+        if(r == 0) r = ECORE_X_RANDR_ROT_270;
+        if(r > ECORE_X_RANDR_ROT_270) r = ECORE_X_RANDR_ROT_0;
+    }
 	else {
 		switch(conf) {
 			case 0:
