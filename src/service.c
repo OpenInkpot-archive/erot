@@ -106,6 +106,7 @@ prepare_path(const char *path)
         free(d);
         return false;
     }
+    free(d);
 
     struct stat s;
     if (-1 == stat(path, &s)) {
