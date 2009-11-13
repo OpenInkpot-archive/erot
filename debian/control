@@ -2,9 +2,9 @@ Source: erot
 Section: gui
 Maintainer: Alexander Kerner <lunohod@openinkpot.org>
 Uploaders: Mikhail Gusarov <dottedmag@dottedmag.net>
-Build-Depends: debhelper (>> 2.0.0), autoconf, automake, libtool, pkg-config, libecore-dev
-XCS-Cross-Host-Build-Depends: debhelper (>> 2.0.0), autoconf, automake, libtool, pkg-config
-XCS-Cross-Build-Depends: libecore-dev
+Build-Depends: debhelper (>= 7), autoconf, automake, pkg-config, libxcb1-dev, libxcb-randr0-dev, libxcb-aux0-dev
+XCS-Cross-Host-Build-Depends: debhelper (>= 7), autoconf, automake, pkg-config
+XCS-Cross-Build-Depends: libxcb1-dev, libxcb-randr0-dev, libxcb-aux0-dev
 Priority: optional
 Standards-Version: 3.6.2
 

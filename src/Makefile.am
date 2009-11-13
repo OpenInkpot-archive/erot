@@ -1,8 +1,9 @@
-INCLUDES = @ECORE_CFLAGS@ @ECORE_CON_CFLAGS@ @ECORE_X_CFLAGS@
-AM_CFLAGS=-Wall -DDATADIR='"$(datadir)"'
+INCLUDES = @XCB_CFLAGS@
+AM_CFLAGS=-Wall
 
 bin_PROGRAMS = erot
 
-erot_SOURCES = erot.c
-erot_LDADD = @ECORE_LIBS@ @ECORE_CON_LIBS@ @ECORE_X_LIBS@
+erot_SOURCES = erot.c service.c
+erot_LDADD = @XCB_LIBS@
+
 
