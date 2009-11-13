@@ -36,6 +36,7 @@
 #define ROTATE "Rotate"
 #define FORWARD_ROTATE "RotateForward"
 #define BACK_ROTATE "RotateBack"
+#define EXIT "Exit"
 
 #define CONFIG_FILE "/etc/default/erot"
 
@@ -242,7 +243,10 @@ handle_client(int fd)
                 rotate(1);
             else if(!strcmp(buf, BACK_ROTATE))
                 rotate(-1);
-            else
+            else if(!strcmp(buf, EXIT)) {
+                close(fd);
+                return false;
+            } else
                 warnx("Unknown command received: %s", buf);
             close(fd);
             return true;
