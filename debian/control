@@ -6,10 +6,10 @@ Build-Depends: debhelper (>= 7), autoconf, automake, pkg-config, libxcb1-dev, li
 XCS-Cross-Host-Build-Depends: debhelper (>= 7), autoconf, automake, pkg-config
 XCS-Cross-Build-Depends: libxcb1-dev, libxcb-randr0-dev, libxcb-aux0-dev
 Priority: optional
-Standards-Version: 3.6.2
+Standards-Version: 3.8.3
 
 Package: erot
 Architecture: any
 Depends: ${shlibs:Depends}
 Description: Screen rotation utility
- Screen rotation utility
+ Utility providing Ecore_Con service for screen rotation.
