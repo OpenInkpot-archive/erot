@@ -1,12 +1,6 @@
 #!/usr/bin/make -f
 
-CFLAGS = -Wall -g
-
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
+CFLAGS += -Wall
 
 configure: configure-stamp
 configure-stamp:
