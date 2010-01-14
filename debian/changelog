@@ -1,3 +1,15 @@
+erot (0.2.2) UNRELEASED; urgency=low
+
+  * Copyright info updated
+  * Coding style fixed
+  * autogen.sh cleaned up
+  * Do not touch CFLAGS passed by dpkg-buildpackage
+  * -dbg package added
+  * Packaging cleanup
+  * Garbage files removed
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Thu, 14 Jan 2010 13:09:32 +0600
+
 erot (0.2-1) asimov; urgency=low
 
   * Rewrite using only XCB in order to decrease memory footprint.
