@@ -13,3 +13,11 @@ Architecture: any
 Depends: ${shlibs:Depends}
 Description: Screen rotation utility
  Utility providing Ecore_Con service for screen rotation.
+
+Package: erot-dbg
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Screen rotation utility -- debugging symbols
+ Utility providing Ecore_Con service for screen rotation.
+ .
+ This package provides debugging symbols.
