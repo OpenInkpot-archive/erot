@@ -48,8 +48,8 @@ static void
 wait_for_input_or_x11_closed(int fd)
 {
     struct pollfd fds[] = {
-        { xcb_get_file_descriptor(c), POLLIN },
-        { fd, POLLIN },
+        {xcb_get_file_descriptor(c), POLLIN},
+        {fd, POLLIN},
     };
 
     if (poll(fds, 2, -1) == -1)
@@ -64,21 +64,21 @@ wait_for_input_or_x11_closed(int fd)
 static int
 get_rotation_type()
 {
-	int i = 360;
-	FILE *f = fopen(CONFIG_FILE, "r");
-	if (f != NULL) {
-		fscanf(f, "%d", &i);
-		fclose(f);
-	}
+    int i = 360;
+    FILE *f = fopen(CONFIG_FILE, "r");
+    if (f != NULL) {
+        fscanf(f, "%d", &i);
+        fclose(f);
+    }
 
-	return i;
+    return i;
 }
 
 static void
 init_randr()
 {
     if (!randr_init) {
-        const xcb_query_extension_reply_t* qreply
+        const xcb_query_extension_reply_t *qreply
             = xcb_get_extension_data(c, &xcb_randr_id);
         if (!qreply)
             errx(1, "No RandR extension found\n");
@@ -94,7 +94,8 @@ init_randr()
             errx(1, "Error querying RandR version: %d\n", e->error_code);
 
         if (reply->major_version < 1 || reply->minor_version < 1) {
-            errx(1, "Server's highest supported version (%d.%d) is lower than 1.1\n",
+            errx(1,
+                 "Server's highest supported version (%d.%d) is lower than 1.1\n",
                  reply->major_version, reply->minor_version);
         }
 
@@ -119,7 +120,8 @@ get_screen_info()
         = xcb_randr_get_screen_info_reply(c, cookie, &e);
 
     if (!reply)
-        err(1, "Error querying RandR screen orientation: %d\n", e->error_code);
+        err(1, "Error querying RandR screen orientation: %d\n",
+            e->error_code);
 
     return reply;
 }
@@ -131,7 +133,7 @@ get_screen_info()
  */
 static bool
 set_rotation(xcb_randr_rotation_t rotation,
-             xcb_randr_get_screen_info_reply_t *cur_state)
+             xcb_randr_get_screen_info_reply_t * cur_state)
 {
     xcb_randr_set_screen_config_cookie_t cookie
         = xcb_randr_set_screen_config(c, root, XCB_CURRENT_TIME,
@@ -167,7 +169,7 @@ randr_rot_to_degrees(xcb_randr_rotation_t rot)
 inline static xcb_randr_rotation_t
 degrees_to_randr_rot(int rot)
 {
-    return 1 << (rot/90);
+    return 1 << (rot / 90);
 }
 
 static int
@@ -186,8 +188,10 @@ next_rotation(int current, int rotation_type, int dir)
 static xcb_randr_rotation_t
 next_rotation_randr(xcb_randr_rotation_t cur, int rotation_type, int dir)
 {
-    return degrees_to_randr_rot(
-        next_rotation(randr_rot_to_degrees(cur), rotation_type, dir));
+    return
+        degrees_to_randr_rot(next_rotation
+                             (randr_rot_to_degrees(cur), rotation_type,
+                              dir));
 }
 
 static void
@@ -202,7 +206,8 @@ rotate(int dir)
     while (!set_rotation(next_rotation, r)) {
         free(r);
         r = get_screen_info();
-        next_rotation = next_rotation_randr(r->rotation, rotation_type, dir);
+        next_rotation =
+            next_rotation_randr(r->rotation, rotation_type, dir);
     }
 
     free(r);
@@ -225,9 +230,9 @@ static bool
 handle_client(int fd)
 {
     int buflen = 0;
-    char buf[MAX_BUFLEN] = {};
+    char buf[MAX_BUFLEN] = { };
 
-    for(;;) {
+    for (;;) {
         wait_for_input_or_x11_closed(fd);
 
         int read_ = read(fd, buf + buflen, MAX_BUFLEN - buflen);
@@ -239,11 +244,11 @@ handle_client(int fd)
         } else if (read_ == 0) {
             if (!strcmp(buf, ROTATE))
                 rotate(1);
-            else if(!strcmp(buf, FORWARD_ROTATE))
+            else if (!strcmp(buf, FORWARD_ROTATE))
                 rotate(1);
-            else if(!strcmp(buf, BACK_ROTATE))
+            else if (!strcmp(buf, BACK_ROTATE))
                 rotate(-1);
-            else if(!strcmp(buf, EXIT)) {
+            else if (!strcmp(buf, EXIT)) {
                 close(fd);
                 return false;
             } else
@@ -259,8 +264,7 @@ static void
 run()
 {
     int service_fd = service_listen("erot");
-    while(handle_client(accept_client(service_fd)))
-        ;
+    while (handle_client(accept_client(service_fd)));
 }
 
 int
@@ -289,24 +293,21 @@ main()
 int
 main()
 {
-    int i ;
+    int i;
     int j = 1;
     printf("randr_rot_to_degrees\n");
-    for (i = 0; i < 4; ++i)
-    {
+    for (i = 0; i < 4; ++i) {
         printf("%d -> %d\n", j, randr_rot_to_degrees(j));
         j <<= 1;
     }
     printf("degrees_to_randr_rot\n");
     for (i = 0; i < 4; ++i)
-        printf("%d -> %d\n", i * 90, degrees_to_randr_rot(i*90));
+        printf("%d -> %d\n", i * 90, degrees_to_randr_rot(i * 90));
     int k;
-    for (i = 0; i <= 360; i += 90)
-    {
+    for (i = 0; i <= 360; i += 90) {
         printf("rottype: %d\n", i);
         for (j = 0; j < 360; j += 90)
-            for (k = -1; k <= 1; k += 2)
-            {
+            for (k = -1; k <= 1; k += 2) {
                 printf("%d -(%d)-> %d\n", j, k, next_rotation(j, i, k));
             }
     }

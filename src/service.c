@@ -32,7 +32,7 @@
 #include "service.h"
 
 #ifndef UNIX_PATH_MAX
-#define UNIX_PATH_MAX 108
+#  define UNIX_PATH_MAX 108
 #endif
 
 /* Taken from libbb/make_directory.c */
@@ -44,12 +44,12 @@ create_directory(char *path, int mode)
         char saved_c = '\0';
         while (*s) {
             if (*s == '/') {
-                while (*s == '/') s++;
+                while (*s == '/')
+                    s++;
                 saved_c = *s;
-                *s = '\0'; /* Terminate string for mkdir below */
+                *s = '\0';      /* Terminate string for mkdir below */
                 break;
-            }
-            else
+            } else
                 s++;
         }
 
@@ -131,7 +131,7 @@ service_listen(const char *app)
 {
     int s = socket(AF_UNIX, SOCK_STREAM, 0);
     if (s == -1)
-       return -1;
+        return -1;
 
     struct sockaddr_un addr = { AF_UNIX };
     if (!service_path(app, 0, addr.sun_path, UNIX_PATH_MAX - 1))
@@ -144,7 +144,7 @@ service_listen(const char *app)
     if (setsockopt(s, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) == -1)
         goto err;
 
-    if (bind(s, (struct sockaddr*)&addr, sizeof(addr)) == -1)
+    if (bind(s, (struct sockaddr *) &addr, sizeof(addr)) == -1)
         goto err;
 
     if (listen(s, 127) == -1)
@@ -153,7 +153,7 @@ service_listen(const char *app)
     return s;
 
     int saved_errno;
-err:
+  err:
     saved_errno = errno;
     close(s);
     errno = saved_errno;
