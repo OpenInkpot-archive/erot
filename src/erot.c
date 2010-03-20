@@ -33,12 +33,15 @@
 
 #include "service.h"
 
+#define PATH_MAX 4096
+
 #define ROTATE "Rotate"
 #define FORWARD_ROTATE "RotateForward"
 #define BACK_ROTATE "RotateBack"
 #define EXIT "Exit"
 
 #define CONFIG_FILE "/etc/default/erot"
+#define USER_CONFIG_FILE "/.e/apps/erot/config"
 
 static xcb_connection_t *c;
 static xcb_window_t root;
@@ -64,14 +67,25 @@ wait_for_input_or_x11_closed(int fd)
 static int
 get_rotation_type()
 {
-    int i = 360;
-    FILE *f = fopen(CONFIG_FILE, "r");
+    char filename[PATH_MAX];
+    snprintf(filename, PATH_MAX, "%s" USER_CONFIG_FILE, getenv("HOME"));
+    FILE *f = fopen(filename, "r");
     if (f != NULL) {
+        int i;
         fscanf(f, "%d", &i);
         fclose(f);
+        return i;
     }
 
-    return i;
+    f = fopen(CONFIG_FILE, "r");
+    if (f != NULL) {
+        int i;
+        fscanf(f, "%d", &i);
+        fclose(f);
+        return i;
+    }
+
+    return 360;
 }
 
 static void
