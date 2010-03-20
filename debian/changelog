@@ -1,5 +1,6 @@
-erot (0.2.2) UNRELEASED; urgency=low
+erot (0.2.2) zelazny; urgency=low
 
+  * Added ~/.e/apps/erot/config configuration file
   * Copyright info updated
   * Coding style fixed
   * autogen.sh cleaned up
@@ -7,6 +8,7 @@ erot (0.2.2) UNRELEASED; urgency=low
   * -dbg package added
   * Packaging cleanup
   * Garbage files removed
+  * .gitignore added
 
  -- Mikhail Gusarov <dottedmag@dottedmag.net>  Thu, 14 Jan 2010 13:09:32 +0600
 
