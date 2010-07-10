@@ -81,16 +81,8 @@ create_directory(char *path, int mode)
 static bool
 service_path(const char *name, int port, char *buf, int buflen)
 {
-    char *user = getenv("USER");
-    if (!user)
-        user = getenv("LOGNAME");
-    if (!user) {
-        errno = EINVAL;
-        return false;
-    }
-
-    if (buflen == snprintf(buf, buflen, "/tmp/.ecore_service-%s/%s/%d",
-                           user, name, port))
+    if (buflen == snprintf(buf, buflen, "/tmp/.ecore_service|%s|%d",
+                           name, port))
         return false;
 
     return true;
