@@ -1,3 +1,9 @@
+erot (0.2.3) zelazny; urgency=low
+
+  * Adjust socket path
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Sat, 10 Jul 2010 20:25:35 +0200
+
 erot (0.2.2) zelazny; urgency=low
 
   * Added ~/.e/apps/erot/config configuration file
